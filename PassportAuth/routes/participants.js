@@ -22,17 +22,36 @@ router.get('/', function(req, res, next) {
     };
 });
 
+
+
 router.post('/addParticipants', function (req,res,next){
-    console.log("Id= " +req.query.id);
-    console.log(req.query.participantEmail);
-    participants.update({email:req.query.participantEmail},{$push:{}})
-    res.end("Not done yet");
+    //participants.update({email:req.query.participantEmail},{$push:{}})
+    participantExists(req.body.participantEmail, req.query.id, res);
 } )
 
 function findParticipants(username, surveyName, cb){
     surveys.find({username : username,  name: surveyName}, function(err, survey) {
         if (err) throw err;
         cb(survey[0].participants);
+    });
+}
+
+function participantExists(email, surveyid, res){
+    participants.find({email : email}, function(err, participant) {
+        if (err) throw err;
+        console.log(participant);
+        if(participant[0]!=undefined){
+            participants.update({"_id":participant[0]._id},{$push: {"surveys": surveyid}});
+            surveys.update({_id:surveyid},{$push:{"participants":participant[0].email}},
+                function(err,model){
+                    if (err){ res.send(err.toString())}
+                    else {res.redirect('back')};
+                });
+        }
+        else{
+            console.log("Participant not found");
+            res.redirect('back');
+        };
     });
 }
 

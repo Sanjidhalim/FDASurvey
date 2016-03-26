@@ -13,7 +13,7 @@
         <% } %>
     </ul>
 
-    <form method="post" action="/participants/addParticipants?id="+<%=surveyID%>>
+    <form method="post" action="/participants/addParticipants?id=<%=surveyID%>">
         <input type="text" name="participantEmail" placeholder="Add new participant email"> <br>
         <input type="submit" value="Add Participant">
     </form>
