@@ -12,7 +12,6 @@ router.get('/', function(req, res, next) {
         var myName= req.user.username;
         var surveyName = req.query.nm;
         var surveyId = req.query.id;
-        console.log("Id of survey" + surveyId);
         findParticipants(myName, surveyName, function(data){
             res.render('participants', { participants: data, name:surveyName, surveyID:surveyId });
         } );
@@ -41,7 +40,10 @@ function participantExists(email, surveyid, res){
         if (err) throw err;
         console.log(participant);
         if(participant[0]!=undefined){
-            participants.update({"_id":participant[0]._id},{$push: {"surveys": surveyid}});
+            participants.update({"_id":participant[0]._id},{$push: {"surveys": surveyid}},
+                function(err, model){
+                    console.log("Just pushed surveyid into array:" + model.surveys);
+                });
             surveys.update({_id:surveyid},{$push:{"participants":participant[0].email}},
                 function(err,model){
                     if (err){ res.send(err.toString())}

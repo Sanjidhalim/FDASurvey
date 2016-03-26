@@ -2,25 +2,45 @@
 <html>
 <head>
     <title>Research Survey</title>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+    <script src = "https://ajax.googleapis.com/ajax/libs/angularjs/1.3.0-beta.17/angular.min.js"></script>
+
+
 </head>
 
 <body>
-<div class="login-middle">
+
+<div class=container>
+
+    <ul class="nav nav-tabs">
+        <li role="presentation" class="active"><a href="/users">Home</a></li>
+    </ul>
+
     <p> <%= name %> has the following participants:</p>
-    <ul style="width:40%">
+    <ul class="list-group">
         <% for(var i=0; i<participants.length; i++) {%>
-        <li><%=participants[i]%></li>
+        <li class="list-group-item"><%=participants[i]%></li>
         <% } %>
     </ul>
 
-    <form method="post" action="/participants/addParticipants?id=<%=surveyID%>">
-        <input type="text" name="participantEmail" placeholder="Add new participant email"> <br>
-        <input type="submit" value="Add Participant">
+
+    <form method="post"  action="/participants/addParticipants?id=<%=surveyID%>">
+        <div class="form-group">
+            <label >Enter participant email</label>
+            <input type="text" class="form-control" name="participantEmail" placeholder="Email">
+        </div>
+        <button type="submit" class="btn btn-default">Submit</button>
     </form>
 
+
     <form method="post" action="/logout">
-        <input type="submit" value="Logout">
+        <button  type="submit" class="btn btn-link">Log Out</button>
     </form>
+
 </div>
 
 </body>

@@ -14,10 +14,10 @@
 
 <div class="container" ng-controller="AppCtrl" >
     <h1>Survey Creator</h1>
-    <ul class="nav nav-tabs">
-        <li role="presentation" class="active"><a href="/users">Home</a></li>
+        <ul class="nav nav-tabs">
+            <li role="presentation" class="active"><a href="/users">Home</a></li>
 
-    </ul>
+        </ul>
 
     <div>
         <label>Enter/Edit Name of Survey</label>
@@ -88,8 +88,8 @@
 
 
     <button class="btn btn-primary" ng-click="addQuestion()" ng-disabled = notEnabled>Add Question</button>
-    <button class="btn btn-primary" ng-click="saveSurvey()">Save Survey</button>
-    <button class="btn btn-primary" ng-click="publish()">Publish Survey</button>
+    <button class="btn btn-primary" ng-click="saveSurvey()" ng-disabled = notEnabled>Save Survey</button>
+    <button class="btn btn-primary" ng-click="publish()" ng-disabled = notEnabled>Publish Survey</button>
 
 
 </div>
