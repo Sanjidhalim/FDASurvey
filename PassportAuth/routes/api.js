@@ -71,9 +71,12 @@ router.post('/addUser',function(req,res,next){
         if (err) console.log(err);
         else {
             if (data.length == 0){
-                participants.insert({"email":req.headers.email,
-                    "name":req.headers.name,
-                    "password":req.headers.password});
+		var participant = new participants({
+		    "name":req.headers.name,
+		    "password":req.headers.password,
+		    "email":req.headers.email
+		});
+		participant.save( function (err, data){ if (err) console.log ("Error:" + error) });
                 res.send(true);
             }
             else res.send(false);
