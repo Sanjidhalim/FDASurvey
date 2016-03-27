@@ -17,6 +17,8 @@ router.get('/getSurvey', function(req, res, next) {
     res.json(x);
 });
 
+
+
 router.post('/getAllSurveys', function(req,res,next){
     authenticate(req.headers.email, req.headers.password,
         function(exists){
@@ -32,21 +34,53 @@ router.post('/getAllSurveys', function(req,res,next){
             }
         })
 });
-router.get('/test',function(){
-    findSurveys("A@test.com",null);
-})
+router.get('/test',function(req,res){
+    findSurveys("A@test.com",res);
+});
 
+//Find all published surveys and send back survey name, questions, and surveyID
 function findSurveys(email,cb){
-    surveys.find({"participants": {"$elemMatch":"A@test.com"}}, function (err, result){
-        console.log("Inside findSurvey");
-        console.log(result[0]);
-        res.end("Working on it");
-    })
-/*    surveys.find().elemMatch('participants','A@test.com').exec(function(err, results){
-        console.log("Inside findSurvey");
+
+    surveys.find().where('participants').in(["B@test.com"]).exec(function(err, results){
         console.log(results);
-    })*/
+        var publishedSurveys=[];
+        for (var i=0;i<results.length;i++){
+            if(!results[i].editable){
+                var tmp={};
+                tmp.name = results[i].name;
+                tmp.id=results[i]._id;
+                tmp.questions= results[i].questions;
+                publishedSurveys.push(tmp);
+            }
+        }
+        cb.send(publishedSurveys);
+    })
 }
+
+router.post('/login',function(req,res,next){
+    console.log("email:" + req.headers.email);
+    authenticate(req.headers.email,req.headers.password,function(exists){
+        if(exists) res.send(true);
+        else res.send(false);
+    })
+});
+
+router.post('/addUser',function(req,res,next){
+    participants.find({"email":"email"},function(err,model){
+        if (err) console.log(err);
+        else {
+            if (data.length == 0){
+                participants.insert({"email":req.headers.email,
+                    "name":req.headers.name,
+                    "password":req.headers.password});
+                res.send("Account created");
+            }
+            else res.send("Account already exists");
+        }
+    });
+
+    }
+);
 
 function authenticate(email, pwd, cb){
     participants.find({"email":"email"},function(err,model){
