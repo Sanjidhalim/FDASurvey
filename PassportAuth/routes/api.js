@@ -83,7 +83,7 @@ router.post('/addUser',function(req,res,next){
 );
 
 function authenticate(email, pwd, cb){
-    participants.find({"email":"email"},function(err,model){
+    participants.find({"email":email},function(err,data){
         if (err) console.log(err);
         else {
             if (data.length == 0){
