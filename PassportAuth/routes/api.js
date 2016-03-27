@@ -65,17 +65,18 @@ router.post('/login',function(req,res,next){
     })
 });
 
+//Adds new participant to database. Prevents signup if email exists in db.
 router.post('/addUser',function(req,res,next){
-    participants.find({"email":"email"},function(err,model){
+    participants.find({"email":req.headers.email},function(err,data){
         if (err) console.log(err);
         else {
             if (data.length == 0){
                 participants.insert({"email":req.headers.email,
                     "name":req.headers.name,
                     "password":req.headers.password});
-                res.send("Account created");
+                res.send(true);
             }
-            else res.send("Account already exists");
+            else res.send(false);
         }
     });
 
