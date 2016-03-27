@@ -10,7 +10,7 @@ var surveys = require('../models/surveyListModel');
 router.get('/getSurvey', function(req, res, next) {
    var x =  {"questions" : [
       { "options" : [ ] , "prompt" : "This is a text question" , "type" : "Txt"} ,
-      { "options" : [ ] , "prompt" : "This is a numeric question" , "type" : "Num"} ,
+  //    { "options" : [ ] , "prompt" : "This is a numeric question" , "type" : "Num"} ,
       { "options" : [ "Choice 1" , "Choice 2" , "Choice 3"] , "prompt" : "This is a multiple choice question" , "type" : "Mc"}]
   }
     console.log(req.headers.email);
