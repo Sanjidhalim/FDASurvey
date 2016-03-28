@@ -8,60 +8,31 @@ var surveys = require('../models/surveyListModel');
 
 
 router.post('/getSurvey', function(req, res, next) {
-   var x =  {"questions" : [
-      { "options" : [ ] , "prompt" : "This is a text question" , "type" : "Txt"} ,
-  //    { "options" : [ ] , "prompt" : "This is a numeric question" , "type" : "Num"} ,
-      { "options" : [ "Choice 1" , "Choice 2" , "Choice 3"] , "prompt" : "This is a multiple choice question" , "type" : "Mc"}]
-  }
-    console.log(req.headers.email);
-    res.json(x);
-});
-
-
-
-router.post('/getAllSurveys', function(req,res,next){
-    authenticate(req.headers.email, req.headers.password,
-        function(exists){
-            if (!exists) res.send("Invalid username/pwd");
-            else {
-                var x =  { "name":"Mock Survey",
-                    "questions" : [
-                    { "options" : [ ] , "prompt" : "This is a text question" , "type" : "Txt"} ,
-                    { "options" : [ ] , "prompt" : "This is a numeric question" , "type" : "Num"} ,
-                    { "options" : [ "Choice 1" , "Choice 2" , "Choice 3"] , "prompt" : "This is a multiple choice question" , "type" : "Mc"}]
-            }
-                res.json(x);
-            }
-        })
-});
-router.get('/test',function(req,res){
-    findSurveys("A@test.com",res);
-});
-
-//Find all published surveys and send back survey name, questions, and surveyID
-function findSurveys(email,cb){
-
-    surveys.find().where('participants').in(["B@test.com"]).exec(function(err, results){
-        console.log(results);
-        var publishedSurveys=[];
-        for (var i=0;i<results.length;i++){
-            if(!results[i].editable){
-                var tmp={};
-                tmp.name = results[i].name;
-                tmp.id=results[i]._id;
-                tmp.questions= results[i].questions;
-                publishedSurveys.push(tmp);
-            }
+    console.log(req.headers.id);
+    authenticate(req.headers.email,req.headers.password, function(exists){
+        if (exists){
+            surveys.find({"_id":req.headers.id}, function (err,result){
+                if (err) console.log(err);
+                else {
+                    var tmp = {};
+                    tmp.questions = result.questions;
+                    res.json(tmp);
+                }
+            })
         }
-        cb.send(publishedSurveys);
-    })
-}
+    });
+    res.json({});
+});
 
 router.post('/login',function(req,res,next){
     console.log("email:" + req.headers.email);
     authenticate(req.headers.email,req.headers.password,function(exists){
-        if(exists) res.send(true);
-        else res.send(false);
+        if(exists) {
+	   findAllSurveys(req.headers.email, function(data){
+		res.json({"survey":data});
+	   });
+	}
+        else res.json({"survey":[]});
     })
 });
 
@@ -70,12 +41,16 @@ router.post('/addUser',function(req,res,next){
         if (err) console.log(err);
         else {
             if (data.length == 0){
-                participants.insert({"email":req.headers.email,
-                    "name":req.headers.name,
-                    "password":req.headers.password});
-                res.send("Account created");
+		var participant = new participants({
+		    "name":req.headers.name,
+		    "password":req.headers.password,
+		    "email":req.headers.email
+		});
+		participant.save( function (err, data){
+            if (err) console.log ("Error:" + error) });
+                res.send(true);
             }
-            else res.send("Account already exists");
+            else res.send(false);
         }
     });
 
@@ -94,5 +69,22 @@ function authenticate(email, pwd, cb){
         }
     });
 }
+
+
+//Find all published surveys and send back survey name and surveyID
+function findAllSurveys(email,cb){
+
+    surveys.find().where('participants').in([email])
+        .where('editable').equals('false')
+        .where('response.email').nin(["B@test.com"])
+        .select('name _id')
+        .exec(function(err, results){
+            cb(results);
+        });
+}
+
+router.get('/test',function(req,res,next){
+
+});
 
 module.exports = router;

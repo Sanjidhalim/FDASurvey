@@ -5,7 +5,7 @@ myApp.controller('AppCtrl', ['$scope', '$http', function($scope, $http) {
     $scope.params=null;
 
     populate = function() {
-        $http.get('/renderSurvey/formData')
+        $http.get('/renderSurvey/getSurvey')
             .then(
                 function(response){
                     console.log("Success getting data. Questions are:" );
@@ -41,20 +41,25 @@ myApp.controller('AppCtrl', ['$scope', '$http', function($scope, $http) {
         console.log($scope.newQuestion);
     };
 
+    //Add Questions of question is not empty
     $scope.addQuestion = function() {
+        if($scope.questionType!="" && $scope.newQuestion != ""){
         $scope.questions.push({type:$scope.questionType,
             prompt: $scope.newQuestion,
             options: $scope.mcqPrompts});
         console.log($scope.questions);
+
 
         //reset Add Question values;
         $scope.newOptions = [];
         $scope.mcqPrompts=[];
         $scope.questionType = "";
         $scope.newQuestion = "";
+        }
 
     };
 
+    //saves and redirects to home page.
     $scope.saveSurvey = function(){
         $http.post('/renderSurvey/saveSurvey',
             {'questions': $scope.questions,
@@ -64,9 +69,6 @@ myApp.controller('AppCtrl', ['$scope', '$http', function($scope, $http) {
             })
             .then(
                 function(response){
-/*                    if (response){
-                        populate();
-                    }*/
                     console.log("Success sending data to server")
                 },
                 function(){console.log("fail sending data to server")});
