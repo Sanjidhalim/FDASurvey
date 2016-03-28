@@ -25,7 +25,7 @@ router.get('/', function(req, res, next) {
     };
 });
 
-router.get('/formData', function (req, res){
+router.get('/getSurvey', function (req, res){
     console.log(newSurvey);
     if (newSurvey){
         var myObj = {};
@@ -53,7 +53,6 @@ router.post('/saveSurvey', function(req,res){
     console.log(req.body);
 
     if (req.body.id !=null) {
-        console.log("ID is not null")
         surveys.update({_id: req.body.id}, {
             $set: {
                 questions: req.body.questions,
@@ -62,7 +61,6 @@ router.post('/saveSurvey', function(req,res){
             }
         }, {}, function (err, numAffected) {
             console.log("Updated and Num Affected " + numAffected);
-            res.send(err);
         })
     } else {
         console.log("Insertion Error");
@@ -73,11 +71,7 @@ router.post('/saveSurvey', function(req,res){
             username: req.user.username
         })
         survey.save(function(err, surv){if (err) console.log("Error :" + error )});
-/*        surveys.insert({
-                questions: "abc",
-                editable: "def",
-                name: "dgi"
-            });*/
     }
+    res.redirect('/users');
 });
 module.exports = router;

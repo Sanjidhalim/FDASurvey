@@ -7,7 +7,7 @@ var participants = require('../models/participantModel');
 var surveys = require('../models/surveyListModel');
 
 
-router.get('/getSurvey', function(req, res, next) {
+router.post('/getSurvey', function(req, res, next) {
     console.log(req.headers.id);
     authenticate(req.headers.email,req.headers.password, function(exists){
         if (exists){
@@ -48,7 +48,8 @@ router.post('/addUser',function(req,res,next){
 		    "password":req.headers.password,
 		    "email":req.headers.email
 		});
-		participant.save( function (err, data){ if (err) console.log ("Error:" + error) });
+		participant.save( function (err, data){
+            if (err) console.log ("Error:" + error) });
                 res.send(true);
             }
             else res.send(false);
@@ -72,22 +73,22 @@ function authenticate(email, pwd, cb){
     });
 }
 
+
+
 //Find all published surveys and send back survey name and surveyID
 function findAllSurveys(email,cb){
 
-    surveys.find().where('participants').in([email]).exec(function(err, results){
-        var publishedSurveys=[];
-        for (var i=0;i<results.length;i++){
-            if(!results[i].editable){
-                var tmp={};
-                tmp.name = results[i].name;
-                tmp.id=results[i]._id;
-                publishedSurveys.push(tmp);
-            }
-        }
-        console.log("Published surveys: " + publishedSurveys);
-        cb(publishedSurveys);
-    })
+    surveys.find().where('participants').in([email])
+        .where('editable').equals('false')
+        .where('response.email').nin(["B@test.com"])
+        .select('name _id')
+        .exec(function(err, results){
+            cb(results);
+        });
 }
+
+router.get('/test',function(req,res,next){
+
+});
 
 module.exports = router;
