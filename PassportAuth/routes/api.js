@@ -15,13 +15,13 @@ router.post('/getSurvey', function(req, res, next) {
                 if (err) console.log(err);
                 else {
                     var tmp = {};
-                    tmp.questions = result.questions;
+                    tmp.questions = result[0].questions;
                     res.json(tmp);
                 }
             })
         }
+	else res.json({});
     });
-    res.json({});
 });
 
 router.post('/login',function(req,res,next){
