@@ -6,6 +6,9 @@ var router = express.Router();
 var participants = require('../models/participantModel');
 var surveys = require('../models/surveyListModel');
 
+router.post('/saveSurvey', function(req,res,next){
+   console.log(req.body);
+});
 
 router.post('/getSurvey', function(req, res, next) {
     console.log(req.headers.id);
@@ -35,6 +38,19 @@ router.post('/login',function(req,res,next){
         else res.json({"survey":[]});
     })
 });
+
+router.post('/saveSurvey', function (req, res,next){
+    authenticate(req.headers.email, req.headers.password, function(exists){
+        if (exists){
+            console.log(req.headers.answer);
+            console.log(req.body);
+/*            surveys.find().where("_id").equals(req.headers.id)
+                .update({$push: {response:}})*/
+            res.send(true);
+        }
+        else res.send (false);
+    })
+})
 
 router.post('/addUser',function(req,res,next){
     participants.find({"email":"email"},function(err,model){
@@ -76,7 +92,7 @@ function findAllSurveys(email,cb){
 
     surveys.find().where('participants').in([email])
         .where('editable').equals('false')
-        .where('response.email').nin(["B@test.com"])
+        .where('response.email').nin([email])
         .select('name _id')
         .exec(function(err, results){
             cb(results);
