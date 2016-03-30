@@ -6,6 +6,12 @@ var router = express.Router();
 var participants = require('../models/participantModel');
 var surveys = require('../models/surveyListModel');
 
+
+router.get('/test',function (req,res){
+    req.flash("hi","hello there");
+    res.send("SSUp");
+});
+
 router.post('/saveSurvey', function(req,res,next){
    console.log(req.body);
 });

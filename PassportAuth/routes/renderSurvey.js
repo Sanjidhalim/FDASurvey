@@ -60,18 +60,16 @@ router.post('/saveSurvey', function(req,res){
                 name: req.body.name
             }
         }, {}, function (err, numAffected) {
-            console.log("Updated and Num Affected " + numAffected);
+            if (err) console.log(err);
         })
     } else {
-        console.log("Insertion Error");
         var survey = new surveys({
             questions: req.body.questions,
             editable: req.body.editable,
             name: req.body.name,
             username: req.user.username
-        })
+        });
         survey.save(function(err, surv){if (err) console.log("Error :" + error )});
     }
-    res.redirect('/users');
 });
 module.exports = router;

@@ -4,7 +4,9 @@ var router = express.Router();
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
+    var msg = req.flash('error');
+    console.log("FLASH:"  + msg);
+  res.render('index', { message: msg, test:msg });
 });
 
 

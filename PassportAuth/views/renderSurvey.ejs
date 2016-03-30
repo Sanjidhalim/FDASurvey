@@ -28,9 +28,9 @@
     <table class="table">
         <tr ng-repeat="question in questions">
 
-            <td ng-if = "question.type== 'Txt'">{{question.prompt + ':\t\tTxt'}}</td>
-            <td ng-if = "question.type== 'Num'">{{question.prompt + ':\t\tNum'}}</td>
-            <td ng-if = "question.type== 'Mc'">{{question.prompt + ':\t\tMc'}}<br>
+            <td ng-if = "question.type== 'Txt'">{{question.prompt }}</td>
+            <td ng-if = "question.type== 'Num'">{{question.prompt }}</td>
+            <td ng-if = "question.type== 'Mc'">{{question.prompt}}<br>
                 <ul class="list-group">
                     <li class="list-group-item" ng-repeat="option in question.options">
                         <label>{{option}}
@@ -88,8 +88,8 @@
 
 
     <button class="btn btn-primary" ng-click="addQuestion()" ng-disabled = notEnabled>Add Question</button>
-    <button class="btn btn-primary" ng-click="saveSurvey()" ng-disabled = notEnabled>Save Survey</button>
-    <button class="btn btn-primary" ng-click="publish()" ng-disabled = notEnabled>Publish Survey</button>
+    <button class="btn btn-primary" ng-click="saveSurvey()" ng-disabled = "notEnabled || surveyName.length==0">Save Survey</button>
+    <button class="btn btn-primary" ng-click="publish()" ng-disabled = "notEnabled || surveyName.length==0">Publish Survey</button>
 
 
 </div>

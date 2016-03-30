@@ -31,10 +31,10 @@ module.exports = function(passport) {
                     return done(err);
                 }
                 if (!user) {
-                    return done(null, false);
+                    return done(null, false, {message:'Username does not exist'});
                 }
                 if (!user.validPassword(password)) {
-                    return done(null, false);
+                    return done(null, false, {message: 'Invalid password'});
                 }
                 return done(null, user);
             });
