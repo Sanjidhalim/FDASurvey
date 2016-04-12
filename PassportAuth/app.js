@@ -53,15 +53,30 @@ app.use('/api',require('./routes/api'));
 
 var routes = require('./routes');
 
-app.get('/', routes.index);
-app.get('/partials/:filename', routes.partials);
-app.get('*', routes.index);
+//Log in and log out settings
+app.get('/loggedin', function(req, res) {
+    res.send(req.isAuthenticated() ? req.user : '0');
+});
 
+app.post('/login',
+    passport.authenticate('local', {
+        successRedirect: '/users',
+        failureRedirect: '/',
+        failureFlash: true
+    })
+);
 
 app.post('/logout', function(req, res) {
     req.logout();
     res.redirect('/');
 });
+
+app.get('/', routes.index);
+app.get('/partials/:filename', routes.partials);
+app.get('*', routes.index);
+
+
+
 
 
 // catch 404 and forward to error handler

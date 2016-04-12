@@ -11,7 +11,7 @@ exports.partials = function(req, res){
     console.log("In partials" + filename);
     if(!filename) return;  // might want to change this
     //res.send("I got here");
-    res.render("partials/"+filename );
+    res.render("partials/"+filename, {name: "Abc", surveys : ["Abc D"]} );
 };
 /* GET home page. */
 /*

@@ -10,8 +10,38 @@ app.config(['$routeProvider', '$locationProvider',
                     templateUrl: "partials/home.ejs",
                     controller: "homePage"
                 })
+                .when("/users", {
+                    templateUrl: "partials/users.ejs",
+                    controller: "users",
+                    resolve: {
+                        loggedin: checkLoggedin
+                    }
+                })
                 .otherwise({ redirectTo: "/signup" });
 
         }
     ]
 );
+
+
+//Checking LoggedIn with promises
+var checkLoggedin = function($q, $timeout, $http, $location, $rootScope){
+    // Initialize a new promise
+    var deferred = $q.defer();
+
+    // Make an AJAX call to check if the user is logged in
+    $http.get('/loggedin').success(function(user){
+        // Authenticated
+        if (user !== '0')
+            deferred.resolve();
+
+        // Not Authenticated
+        else {
+            $rootScope.message = 'You need to log in.';
+            deferred.reject();
+            $location.url('/');
+        }
+    });
+
+    return deferred.promise;
+};
