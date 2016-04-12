@@ -2,8 +2,11 @@
 //var passport = require('passport');
 //var router = express.Router();
 
+//Renders sign in page if not logged in
+//else renders admin page
 exports.index = function(req, res){
-    res.render('index');
+    if (!req.user || req.user) res.render('index');
+    //res.redirect('/users');
 };
 
 exports.partials = function(req, res){

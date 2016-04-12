@@ -11,7 +11,7 @@ var participants = require('../models/participantModel');
 router.get('/getSurveyList', function (req, res){
     authenticate (req,res, function(){
         var username = req.user.username;
-        findSurveys(username, function(names){
+        findSurveyList(username, function(names){
             res.json({
                 name: username,
                 id:req.user.id,
@@ -20,6 +20,24 @@ router.get('/getSurveyList', function (req, res){
         })
 
 
+    });
+});
+
+//Returns data relevant to one survey
+router.get('/getSurvey', function (req, res){
+    authenticate (req,res, function(){
+        findSurvey(req.query.id, function(data){
+            res.json(data);
+        })
+    });
+});
+
+//Returns data relevant to one survey
+router.post('/saveSurvey', function (req, res){
+    authenticate (req,res, function(){
+        saveSurvey(req, function(id){
+            res.json(id);
+        })
     });
 });
 
@@ -32,8 +50,8 @@ var authenticate = function(req,res,cb){
   else res.redirect('/');
 };
 
-//finds all Surveys with gven username
-function findSurveys(username, cb){
+//finds all Surveys with given username
+function findSurveyList(username, cb){
     surveys.find({username : username}, function(err, survey) {
         if (err) throw err;
         var str = [];
@@ -44,4 +62,46 @@ function findSurveys(username, cb){
         cb(str);
     });
 }
+
+function findSurvey(id, cb){
+    surveys.findOne({_id: id}, function (err, survey) {
+        var myObj = {};
+        myObj.questions = survey.questions;
+        myObj.editable = survey.editable;
+        myObj.name = survey.name;
+        myObj.id = survey._id;
+        cb(myObj);
+    });
+}
+
+// Save Survey, update if already exists
+//Todo : Handle saving error
+function saveSurvey(req,cb){
+    var id = req.body.id;
+    if (id==null){
+        var survey = new surveys({
+            questions: req.body.questions,
+            editable: req.body.editable,
+            name: req.body.name,
+            username: req.user.username
+        });
+        survey.save(function(err, surv){
+            if (err) console.log("Error save Survey :" + error );
+            cb({id:surv._id});
+        });
+    }
+    else {
+        surveys.update({_id: id}, {
+            $set: {
+                questions: req.body.questions,
+                editable: req.body.editable,
+                name: req.body.name
+            }
+        }, {}, function (err, numAffected) {
+            if (err) console.log(err);
+            cb({id:id});
+        });
+    }
+}
+
 module.exports = router;
