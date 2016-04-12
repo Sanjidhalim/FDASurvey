@@ -41,6 +41,22 @@ router.post('/saveSurvey', function (req, res){
     });
 });
 
+//Returns participants of a survey
+router.post('/getParticipants', function (req, res){
+    authenticate (req,res, function(){
+        findParticipants(req, function(participants){
+            res.json({participants:participants});
+        })
+    });
+});
+
+router.post('/addParticipants', function (req, res){
+    authenticate (req,res, function(){
+        participantExists(req.body.email,req.query.id, function(array){
+            res.json({participants: array});
+        })
+    });
+});
 //Calls cb method if user authenticated,
 //else redirects
 var authenticate = function(req,res,cb){
@@ -71,6 +87,31 @@ function findSurvey(id, cb){
         myObj.name = survey.name;
         myObj.id = survey._id;
         cb(myObj);
+    });
+}
+
+function findParticipants(id, cb){
+    surveys.find({"_id" : id}, function(err, survey) {
+        if (err) throw err;
+        cb(survey[0].participants);
+    });
+}
+
+//if participant exists, add to survey, calls callback with participant list
+function participantExists(email, surveyid,cb){
+    participants.find({email : email}, function(err, participant) {
+        if (err) throw err;
+        if(participant[0]!=undefined){
+            surveys.update({_id:surveyid},{$push:{"participants":participant[0].email}},
+                function(err,model){
+                    if (err){console.log(err.toString())};
+                    console.log("Updated participants:" + model);
+                    cb(model)
+                });
+        }
+        else{
+            cb([]);
+        };
     });
 }
 

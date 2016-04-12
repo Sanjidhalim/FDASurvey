@@ -20,20 +20,19 @@
         <li role="presentation" class="active"><a href="/users">Home</a></li>
     </ul>
 
-    <p> <%= name %> has the following participants:</p>
+    <p> {{name}} has the following participants:</p>
     <ul class="list-group">
-        <% for(var i=0; i<participants.length; i++) {%>
-        <li class="list-group-item"><%=participants[i]%></li>
-        <% } %>
+        <li  class="list-group-item" ng-repeat="person in participants">{{person}}</li>
     </ul>
 
 
-    <form method="post"  action="/participants/addParticipants?id=<%=surveyID%>">
+
+    <form >
         <div class="form-group">
             <label >Enter participant email</label>
-            <input type="text" class="form-control" name="participantEmail" placeholder="Email">
+            <input type="text" ng-model="email" class="form-control" name="participantEmail" placeholder="Email">
         </div>
-        <button type="submit" class="btn btn-default">Submit</button>
+        <button type="submit" ng-click="submit(email)" class="btn btn-default">Submit</button>
     </form>
 
 

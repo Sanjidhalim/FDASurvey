@@ -14,8 +14,9 @@
             <tr ng-repeat="survey in $parent.survey">
 
                 <td> <a href="{{'/renderSurvey?id='+ survey[1]}}">{{survey[0]}}</a> </td>
-                <td> <a href="{{'/renderSurvey?id='+ survey[1]}}"> Participants </a> </td>
-                <td> <a href="{{'/renderSurvey?id='+ survey[1]}}"> Results </a> </td>
+                <td> <a href="{{'/participant?id='+ survey[1] + '&nm=' + splitAndAdd(survey[0])}}">
+                        Participants </a> </td>
+                <td> <a href="{{'/result?id='+ survey[1]}}"> Results </a> </td>
             </tr>
         </table>
 

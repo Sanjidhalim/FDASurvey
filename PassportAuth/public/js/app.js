@@ -24,6 +24,13 @@ app.config(['$routeProvider', '$locationProvider',
                         loggedin: checkLoggedin
                     }
                 })
+                .when("/participant", {
+                    templateUrl: "partials/participants.ejs",
+                    controller: "participant",
+                    resolve: {
+                        loggedin: checkLoggedin
+                    }
+                })
                 .otherwise({ redirectTo: "/signup" });
 
         }
