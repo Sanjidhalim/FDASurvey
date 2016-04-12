@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+<head>
+    <meta charset="UTF-8">
+    <title>Form Builder</title>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+    <script src = "https://ajax.googleapis.com/ajax/libs/angularjs/1.3.0-beta.17/angular.min.js"></script>
+</head>
+<body>
+
+<div class="container" ng-controller="AppCtrl" >
+    <h1>Survey Creator</h1>
+        <ul class="nav nav-tabs">
+            <li role="presentation" class="active"><a href="/users">Home</a></li>
+
+        </ul>
+
+    <div>
+        <label>Enter/Edit Name of Survey</label>
+        <input type="text" class="form-control"  placeholder="Name of Survey" ng-model=surveyName>
+    </div>
+    <br>
+
+    <table class="table">
+        <tr ng-repeat="question in questions">
+
+            <td ng-if = "question.type== 'Txt'">{{question.prompt }}</td>
+            <td ng-if = "question.type== 'Num'">{{question.prompt }}</td>
+            <td ng-if = "question.type== 'Mc'">{{question.prompt}}<br>
+                <ul class="list-group">
+                    <li class="list-group-item" ng-repeat="option in question.options">
+                        <label>{{option}}
+                            <input type="radio" name="name" value="{{option}}" required />
+                        </label>
+                    </li>
+                </ul>
+            </td>
+            <td class="text-center">
+                <button type="button" class="btn btn-default" aria-label="Left Align">
+                    <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+                </button>
+            </td>
+            <td class="text-center">
+                <button type="button" class="btn btn-default" aria-label="Left Align">
+                    <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                </button>
+            </td>
+        </tr>
+    </table>
+
+    <!-- This is commented out for now
+    <label>Add new Question</label>
+    <input type="text" class="form-control" name="" ng-model="newQuestion" placeholder="Enter Question">
+    <br>
+    -->
+    <span class="label label-pill label-info">Select type of question to add</span>
+    <select ng-model="questionType">
+        <option value="Num">Number input</option>
+        <option value="Txt">Text input</option>
+        <option value="Mc">Multiple Choice</option>
+    </select>
+
+    <div ng-if="questionType=='Num'">
+        <input type="text" class="form-control" name="" ng-model="$parent.newQuestion" placeholder="Enter Question">
+        <br>
+    </div>
+
+    <div ng-if="questionType=='Txt'">
+        <input type="text" class="form-control" name="" ng-model="$parent.newQuestion" placeholder="Enter Question">
+        <br>
+    </div>
+    <br>
+
+    <div ng-if="questionType=='Mc'">
+        <input type="text" class="form-control" name="" ng-model="$parent.newQuestion" placeholder="Enter Prompt">
+        <br>
+
+        <div class="col-xs-3" ng-repeat="i in newOptions">
+            <input class="form-control" ng-model="mcqPrompts[i]" type="text" placeholder="Add new option"><br>
+        </div>
+        <button class = "btn btn-primary" ng-click="newMcOption()">Add Option</button>
+    </div>
+    <br>
+
+
+    <button class="btn btn-primary" ng-click="addQuestion()" ng-disabled = notEnabled>Add Question</button>
+    <button class="btn btn-primary" ng-click="saveSurvey()" ng-disabled = "notEnabled || surveyName.length==0">Save Survey</button>
+    <button class="btn btn-primary" ng-click="publish()" ng-disabled = "notEnabled || surveyName.length==0">Publish Survey</button>
+
+
+</div>
+
+
+
+<div class="FormElements"></div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular.min.js"></script>
+<script src = "../public/controller.js"></script>
+</body>
+</html>

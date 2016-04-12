@@ -2,16 +2,36 @@
 <html>
 <head>
     <title>Research Survey</title>
+    <!--BootStrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+
+
 </head>
 
 <body>
-    <div class="login-middle">
-        <p>Create Account.</p>
-        <form method="post" action="/signup/newUser">
-            <input type="text" name="username" placeholder="Enter Username"> <br>
-            <input type="password" name="password" placeholder="Password"> <br>
-            <input type="submit" value="Sign Up!">
-        </form>
-    </div>
 
+<div class="container">
+<form method="post" action="/signup/newUser" class="form-horizontal">
+        <div class="form-group">
+            <label for="inputEmail3" class="col-sm-2 control-label">Username</label>
+            <div class="col-xs-4">
+                <input type="text" class="form-control" name="username" placeholder="Email">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="inputPassword3" class="col-sm-2 control-label">Password</label>
+            <div class="col-xs-4">
+                <input type="password" class="form-control" name="password" placeholder="Password">
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <button type="submit" class="btn btn-default">Sign Up</button>
+            </div>
+        </div>
+    </form>
+</div>
 </body>

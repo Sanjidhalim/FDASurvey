@@ -7,8 +7,8 @@ var participants = require('../models/participantModel');
 router.get('/', function(req, res, next) {
   if(req.user){
     var myName = req.user.username;
-    showSurveys(myName, function(data){
-        res.render('users', { surveys: data, name:myName });
+    showSurveys(myName, function(data , ids){
+        res.render('users', { surveys: data, id:ids, name:myName });
     } );
   }
   else {
@@ -19,13 +19,15 @@ router.get('/', function(req, res, next) {
 
 
 function showSurveys(username, cb){
-    surveys.find({username : username}, function(err, users) {
+    surveys.find({username : username}, function(err, survey) {
         if (err) throw err;
         var str = [];
-        for(var i = 0; i < users.length; i++){
-            str[i] = users[i].name;
+        var id = [];
+        for(var i = 0; i < survey.length; i++){
+            str[i] = survey[i].name;
+            id[i] = survey[i]._id;
         }
-        cb(str);
+        cb(str, id);
     });
 }
 module.exports = router;

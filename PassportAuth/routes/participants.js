@@ -4,15 +4,16 @@
 var express = require('express');
 var router = express.Router();
 var surveys = require('../models/surveyListModel');
+var participants = require('../models/participantModel');
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
     if(req.user){
         var myName= req.user.username;
         var surveyName = req.query.nm;
+        var surveyId = req.query.id;
         findParticipants(myName, surveyName, function(data){
-            console.log("participants = " + data);
-            res.render('participants', { participants: data, name:surveyName });
+            res.render('participants', { participants: data, name:surveyName, surveyID:surveyId });
         } );
     }
     else {
@@ -20,14 +21,39 @@ router.get('/', function(req, res, next) {
     };
 });
 
-router.get('/addParticipants', function (req,res,next){
-    res.end("Not done yet");
+
+
+router.post('/addParticipants', function (req,res,next){
+    //participants.update({email:req.query.participantEmail},{$push:{}})
+    participantExists(req.body.participantEmail, req.query.id, res);
 } )
 
 function findParticipants(username, surveyName, cb){
     surveys.find({username : username,  name: surveyName}, function(err, survey) {
         if (err) throw err;
         cb(survey[0].participants);
+    });
+}
+
+function participantExists(email, surveyid, res){
+    participants.find({email : email}, function(err, participant) {
+        if (err) throw err;
+        console.log(participant);
+        if(participant[0]!=undefined){
+            participants.update({"_id":participant[0]._id},{$push: {"surveys": surveyid}},
+                function(err, model){
+                    console.log("Just pushed surveyid into array:" + model.surveys);
+                });
+            surveys.update({_id:surveyid},{$push:{"participants":participant[0].email}},
+                function(err,model){
+                    if (err){ res.send(err.toString())}
+                    else {res.redirect('back')};
+                });
+        }
+        else{
+            console.log("Participant not found");
+            res.redirect('back');
+        };
     });
 }
 
