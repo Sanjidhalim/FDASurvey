@@ -27,14 +27,21 @@
 
 
 
-    <form >
-        <div class="form-group">
-            <label >Enter participant email</label>
-            <input type="text" ng-model="email" class="form-control" name="participantEmail" placeholder="Email">
-        </div>
-        <button type="submit" ng-click="submit(email)" class="btn btn-default">Submit</button>
-    </form>
 
+        <form  class="form-horizontal">
+            <div class="form-group row">
+                <label for="inputEmail3" class="col-sm-2 control-label">Enter participant email</label>
+                <div class="col-xs-4">
+                    <input type="text" ng-model="email" class="form-control" name="participantEmail" placeholder="Email">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button type="submit"  ng-click="submit(email)" class="btn btn-default">Submit</button>
+                </div>
+            </div>
+        </form>
 
     <form method="post" action="/logout">
         <button  type="submit" class="btn btn-link">Log Out</button>

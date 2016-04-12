@@ -7,8 +7,7 @@ app.config(['$routeProvider', '$locationProvider',
             $locationProvider.html5Mode(true);
             $routeProvider
                 .when("/", {
-                    templateUrl: "partials/home.ejs",
-                    controller: "homePage"
+                    templateUrl: "partials/home.ejs"
                 })
                 .when("/users", {
                     templateUrl: "partials/users.ejs",
@@ -31,7 +30,10 @@ app.config(['$routeProvider', '$locationProvider',
                         loggedin: checkLoggedin
                     }
                 })
-                .otherwise({ redirectTo: "/signup" });
+                .when("/signup", {
+                    templateUrl: "partials/signup.ejs",
+                })
+                .otherwise({ redirectTo: "/" });
 
         }
     ]

@@ -44,7 +44,7 @@ router.post('/saveSurvey', function (req, res){
 //Returns participants of a survey
 router.post('/getParticipants', function (req, res){
     authenticate (req,res, function(){
-        findParticipants(req, function(participants){
+        findParticipants(req.query.id, function(participants){
             res.json({participants:participants});
         })
     });
@@ -91,9 +91,10 @@ function findSurvey(id, cb){
 }
 
 function findParticipants(id, cb){
-    surveys.find({"_id" : id}, function(err, survey) {
-        if (err) throw err;
-        cb(survey[0].participants);
+    surveys.findOne({"_id" : id}, function(err, survey) {
+        console.log(JSON.stringify(survey));
+        if (err) console.log("LOgging error in find"+err);
+        cb(survey.participants);
     });
 }
 
@@ -102,11 +103,20 @@ function participantExists(email, surveyid,cb){
     participants.find({email : email}, function(err, participant) {
         if (err) throw err;
         if(participant[0]!=undefined){
-            surveys.update({_id:surveyid},{$push:{"participants":participant[0].email}},
+            surveys.findOneAndUpdate({_id:surveyid},{$addToSet:{"participants":participant[0].email}},
                 function(err,model){
-                    if (err){console.log(err.toString())};
-                    console.log("Updated participants:" + model);
-                    cb(model)
+                    if (err){console.log(err.toString())}
+                    else
+                    {
+                        for (var i = 0; i < model.participants.length; i++) {
+                            //Since this returns list before update,
+                            //add email to list if not already in list
+                            if (model.participants[i] == email) break;
+                            if (i == model.participants.length - 1) model.participants.push(email);
+                        }
+                    }
+
+                    cb(model.participants)
                 });
         }
         else{

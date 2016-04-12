@@ -26,7 +26,7 @@ app.controller('homePage', ['$scope', function($scope) {
 }]);
 
 app.controller('participant', ['$scope','$http','$routeParams', function($scope, $http, $routeParams) {
-    $http.get('/data/getParticipants?id='+$routeParams.id)
+    $http.post('/data/getParticipants?id='+$routeParams.id,null)
         .then(
             function(response){
                 $scope.participants = response.data.participants;
@@ -41,8 +41,9 @@ app.controller('participant', ['$scope','$http','$routeParams', function($scope,
             {'email': email })
             .then(
                 function(response){
-                    $scope.participants = response.data.participants;
-                    console.log("Updated Participant" + response.data);
+                    if (response.data.participants.length!=0){
+                        $scope.participants = response.data.participants;
+                    }
                 },
                 function(){console.log("fail sending data to server")});
 

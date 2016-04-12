@@ -42,18 +42,10 @@ app.use(flash());
 //app.use(express.static(path.join(__dirname, '/public')));
 app.use('/public',express.static(path.join(__dirname, '/public')));
 
-/*
-app.use('/', require('./routes/index'));
-app.use('/users', require('./routes/users'));
-app.use('/signup',require('./routes/signup'));
-app.use('/renderSurvey',require('./routes/renderSurvey'));
-app.use('/participants',require('./routes/participants'));
-app.use('/api',require('./routes/api'));
-*/
-
 var routes = require('./routes');
 
 app.use('/data',require('./routes/data'));
+app.use('/api',require('./routes/api'));
 
 /**********LOG IN/ LOG OUT **********/
 app.get('/loggedin', function(req, res) {
@@ -72,6 +64,13 @@ app.post('/logout', function(req, res) {
     req.logout();
     res.redirect('/');
 });
+
+app.post('/signup', passport.authenticate('signup', {
+    successRedirect: '/users',
+    failureRedirect: '/signup',
+    failureFlash : true
+}));
+
 
 app.get('/', routes.index);
 app.get('/partials/:filename', routes.partials);
