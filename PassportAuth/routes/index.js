@@ -8,9 +8,7 @@ exports.index = function(req, res){
 
 exports.partials = function(req, res){
     var filename = req.params.filename;
-    console.log("In partials" + filename);
     if(!filename) return;  // might want to change this
-    //res.send("I got here");
     res.render("partials/"+filename, {name: "Abc", surveys : ["Abc D"]} );
 };
 /* GET home page. */
@@ -21,13 +19,5 @@ router.get('/', function(req, res, next) {
   res.render('index', { message: msg, test:msg });
 });
 
-
-router.post('/login',
-    passport.authenticate('local', {
-        successRedirect: '/users',
-        failureRedirect: '/',
-        failureFlash: true
-    })
-);
 */
 

@@ -17,6 +17,13 @@ app.config(['$routeProvider', '$locationProvider',
                         loggedin: checkLoggedin
                     }
                 })
+                .when("/renderSurvey", {
+                    templateUrl: "partials/renderSurvey.ejs",
+                    controller: "renderSurvey",
+                    resolve: {
+                        loggedin: checkLoggedin
+                    }
+                })
                 .otherwise({ redirectTo: "/signup" });
 
         }

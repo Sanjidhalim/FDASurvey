@@ -53,7 +53,9 @@ app.use('/api',require('./routes/api'));
 
 var routes = require('./routes');
 
-//Log in and log out settings
+app.use('/data',require('./routes/data'));
+
+/**********LOG IN/ LOG OUT **********/
 app.get('/loggedin', function(req, res) {
     res.send(req.isAuthenticated() ? req.user : '0');
 });

@@ -2,8 +2,24 @@
 <html>
 
 <body>
-<div class="login-middle">
-    <p> Hello</p>
+<div class="container">
+    <h3> Hello {{name}}!</h3>
+    <div ng-if="survey.length==0">
+        <p> Click below to make your first survey! </p>
+    </div>
+
+    <div ng-if="survey.length!=0">
+        <p> Here are your surveys </p>
+        <table class="table">
+            <tr ng-repeat="survey in $parent.survey">
+
+                <td> <a href=<{{"renderSurvey?id="+survey[1]}}>{{survey[0]}}</a> </td>
+                <td> <a href=<{{"participants?id="+survey[1]}}> Participants </a> </td>
+                <td> <a href=<{{"participants?id="+survey[1]}}> Results </a> </td>
+            </tr>
+        </table>
+
+    </div>
 
 
 
