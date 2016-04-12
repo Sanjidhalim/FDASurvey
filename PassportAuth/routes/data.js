@@ -100,22 +100,29 @@ function findParticipants(id, cb){
 
 //if participant exists, add to survey, calls callback with participant list
 function participantExists(email, surveyid,cb){
+
+    //check if participant exists
     participants.find({email : email}, function(err, participant) {
         if (err) throw err;
+
+        //if participant exists then add to survey
         if(participant[0]!=undefined){
             surveys.findOneAndUpdate({_id:surveyid},{$addToSet:{"participants":participant[0].email}},
                 function(err,model){
                     if (err){console.log(err.toString())}
                     else
-                    {
+                    {   //Since this returns list before update,
+                        //add email to list if not already in list
+                        var exists = false;
                         for (var i = 0; i < model.participants.length; i++) {
-                            //Since this returns list before update,
-                            //add email to list if not already in list
-                            if (model.participants[i] == email) break;
-                            if (i == model.participants.length - 1) model.participants.push(email);
+                            if (model.participants[i] == email){
+                                exists = true;
+                                break;
+                            }
                         }
+                        if (!exists) model.participants.push(email);
                     }
-
+                    //send back participants to controller for display.
                     cb(model.participants)
                 });
         }
