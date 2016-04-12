@@ -38,7 +38,8 @@ router.post('/login',function(req,res,next){
     authenticate(req.headers.email,req.headers.password,function(exists){
         if(exists) {
 	   findAllSurveys(req.headers.email, function(data){
-		res.json({"survey":data});
+		res.json({"survey":data,
+                  "login":true});
 	   });
 	}
         else res.json({"survey":[]});
