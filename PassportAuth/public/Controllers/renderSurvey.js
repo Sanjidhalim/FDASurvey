@@ -77,9 +77,40 @@ app.controller('renderSurvey', ['$scope', '$http', '$routeParams', function($sco
         //alert("You are about to save "+ surveyName );
     };
 
+    $scope.deleteQuestion = function(question){
+        var index =$scope.questions.indexOf(question);
+        if (index>-1){
+            $scope.questions.splice(index,1);
+        }
+    };
+
+    $scope.moveUp = function(question){
+        var index =$scope.questions.indexOf(question);
+        if (index>0){
+            var temp = $scope.questions[index-1];
+            $scope.questions[index-1] = $scope.questions[index];
+            $scope.questions[index] = temp;
+        }
+    };
+
+    $scope.moveDown = function(question){
+        var index =$scope.questions.indexOf(question);
+        if (index<$scope.questions.length-1){
+            var temp = $scope.questions[index+1];
+            $scope.questions[index+1] = $scope.questions[index];
+            $scope.questions[index] = temp;
+        }
+    };
+
     $scope.publish = function(){
         $scope.notEnabled=true;
         $scope.saveSurvey();
     };
 
+/*    $scope.$on('$locationChangeStart', function( event ) {
+        var answer = confirm("Are you sure you want to leave this page?")
+        if (!answer) {
+            event.preventDefault();
+        }
+    });*/
 }]);

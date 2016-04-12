@@ -52,8 +52,16 @@ router.post('/getParticipants', function (req, res){
 
 router.post('/addParticipants', function (req, res){
     authenticate (req,res, function(){
-        participantExists(req.body.email,req.query.id, function(array){
+        findParticipantAndAdd(req.body.email,req.query.id, function(array){
             res.json({participants: array});
+        })
+    });
+});
+
+router.post('/deleteParticipant', function (req, res){
+    authenticate (req,res, function(){
+        deleteParticipants(req.query.id,req.query.person, function(array){
+            res.json({dbQuery: array});
         })
     });
 });
@@ -99,7 +107,7 @@ function findParticipants(id, cb){
 }
 
 //if participant exists, add to survey, calls callback with participant list
-function participantExists(email, surveyid,cb){
+function findParticipantAndAdd(email, surveyid,cb){
 
     //check if participant exists
     participants.find({email : email}, function(err, participant) {
@@ -160,6 +168,14 @@ function saveSurvey(req,cb){
             cb({id:id});
         });
     }
+}
+
+function deleteParticipants(id,person,cb){
+    console.log(id + person);
+    surveys.findOneAndUpdate({"_id":id},{$pull:{participants: {$in:person},participants:person}},{new: true},function(err,model){
+        if (err) {cb({"success":false})}
+        else cb({"success":true,participants:model.participants});
+    } )
 }
 
 module.exports = router;

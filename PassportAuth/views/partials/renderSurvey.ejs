@@ -40,12 +40,16 @@
                 </ul>
             </td>
             <td class="text-center">
-                <button type="button" class="btn btn-default" aria-label="Left Align">
-                    <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+                <button type="button" class="btn btn-default" ng-click="moveUp(question)" aria-label="Left Align">
+                    <span class="glyphicon glyphicon-upload" aria-hidden="true"></span>
+                </button>
+
+                <button type="button" class="btn btn-default" ng-click="moveDown(question)" aria-label="Left Align">
+                    <span class="glyphicon glyphicon-download" aria-hidden="true"></span>
                 </button>
             </td>
             <td class="text-center">
-                <button type="button" class="btn btn-default" aria-label="Left Align">
+                <button type="button" ng-click="deleteQuestion(question)" class="btn btn-default" aria-label="Left Align">
                     <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
                 </button>
             </td>
@@ -87,13 +91,14 @@
     <br>
 
 
+</div>
+
+<div class="container">
     <button class="btn btn-primary" ng-click="addQuestion()" ng-disabled = notEnabled>Add Question</button>
     <button class="btn btn-primary" ng-click="saveSurvey()" ng-disabled = "notEnabled || surveyName.length==0">Save Survey</button>
     <button class="btn btn-primary" ng-click="publish()" ng-disabled = "notEnabled || surveyName.length==0">Publish Survey</button>
 
-
 </div>
-
 
 
 <div class="FormElements"></div>

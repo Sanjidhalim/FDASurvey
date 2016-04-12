@@ -20,13 +20,24 @@
         <li role="presentation" class="active"><a href="/users">Home</a></li>
     </ul>
 
-    <p> {{name}} has the following participants:</p>
-    <ul class="list-group">
-        <li  class="list-group-item" ng-repeat="person in participants">{{person}}</li>
-    </ul>
+    <div ng-if="participants.length==0">
+        <p> Click below to add participants to {{name}} </p>
+    </div>
 
+    <div ng-if="participants.length!=0">
+        <p> <b>{{name}} </b> has the following participants. </p>
+    </div>
 
-
+    <table class="table">
+        <tr ng-repeat="person in participants">
+            <td>{{person}}</td>
+            <td class="text-center">
+                <button type="button" ng-click="deleteParticipant(person)" class="btn btn-default" aria-label="Left Align">
+                    <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                </button>
+            </td>
+        </tr>
+    </table>
 
         <form  class="form-horizontal">
             <div class="form-group row">

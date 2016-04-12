@@ -43,9 +43,21 @@ app.controller('participant', ['$scope','$http','$routeParams', function($scope,
                 function(response){
                     if (response.data.participants.length!=0){
                         $scope.participants = response.data.participants;
+                        $scope.email="";
                     }
                 },
                 function(){console.log("fail sending data to server")});
 
     };
+
+    $scope.deleteParticipant = function(person){
+        $http.post('/data/deleteParticipant?id='+$scope.id+"&person="+person,null)
+            .then(
+                function(response){
+                    if(response.data.dbQuery.success==true){
+                        $scope.participants = response.data.dbQuery.participants;
+                    }
+                },
+                function(){console.log("Failed to get data")});
+    }
 }]);
