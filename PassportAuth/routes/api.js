@@ -50,8 +50,8 @@ router.post('/saveSurvey', function (req, res,next){
         if (exists){
             console.log(req.headers.answer);
             console.log(req.body);
-/*            surveys.find().where("_id").equals(req.headers.id)
-                .update({$push: {response:}})*/
+           surveys.find().where("_id").equals(req.headers.surveyID)
+                .update({$push: {response:req.headers.answer}})
             res.send(true);
         }
         else res.send (false);
