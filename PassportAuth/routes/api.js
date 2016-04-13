@@ -12,12 +12,9 @@ router.get('/test',function (req,res){
     res.send("SSUp");
 });
 
-router.post('/saveSurvey', function(req,res,next){
-   console.log(req.body);
-});
 
 router.post('/getSurvey', function(req, res, next) {
-    console.log(req.headers.id);
+    console.log("Logging id in get survey" + req.headers.id);
     authenticate(req.headers.email,req.headers.password, function(exists){
         if (exists){
             surveys.find({"_id":req.headers.id}, function (err,result){
@@ -34,24 +31,39 @@ router.post('/getSurvey', function(req, res, next) {
 });
 
 router.post('/login',function(req,res,next){
-    console.log("email:" + req.headers.email);
     authenticate(req.headers.email,req.headers.password,function(exists){
         if(exists) {
 	   findAllSurveys(req.headers.email, function(data){
-		res.json({"survey":data});
+		res.json({"survey":data,
+                  "login":true});
 	   });
 	}
-        else res.json({"survey":[]});
+        else res.json({"survey":[],
+			"login":false});
     })
 });
 
 router.post('/saveSurvey', function (req, res,next){
     authenticate(req.headers.email, req.headers.password, function(exists){
         if (exists){
-            console.log(req.headers.answer);
-            console.log(req.body);
-           surveys.find().where("_id").equals(req.headers.surveyID)
-                .update({$push: {response:req.headers.answer}})
+            console.log("Printing headers:" + JSON.stringify(req.headers));
+            console.log("SurveyID" + req.headers.surveyid);
+            /*surveys.find().where("_id").equals(req.headers.surveyID)
+                .update({$set: {response:{"answers":req.headers.answer,"email":req.headers.email}}})
+                .exec(function(err,data){
+			if (err) {console.log("Error saving resposne to survey")}
+			else {console.log("Responses saved to survey: " + JSON.stringify(data))}
+		});*/
+		var temp = {"answers":req.headers.answer,"email":req.headers.email};
+		console.log("save survey temp var : " + JSON.stringify(temp));
+		surveys.update({_id: req.headers.surveyid}, {
+           		 $push: {
+                		response: temp,
+            			}
+        		}, {}, function (err, numAffected) {
+            				if (err) {console.log(err)}
+            				else {console.log("Success save survey" + JSON.stringify(numAffected))};
+        			});
             res.send(true);
         }
         else res.send (false);
@@ -59,7 +71,7 @@ router.post('/saveSurvey', function (req, res,next){
 })
 
 router.post('/addUser',function(req,res,next){
-    participants.find({"email":"email"},function(err,model){
+    participants.find({"email":"email"},function(err,data){
         if (err) console.log(err);
         else {
             if (data.length == 0){

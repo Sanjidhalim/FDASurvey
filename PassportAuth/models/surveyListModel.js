@@ -11,7 +11,7 @@ var surveyList = new Schema ({
     questions: Object,
     editable: Boolean,
     participants: {type:Array, default:[]},
-    response:Object
+    response:{type:Array, default:[]}
 });
 
 
