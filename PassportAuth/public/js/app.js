@@ -30,6 +30,13 @@ app.config(['$routeProvider', '$locationProvider',
                         loggedin: checkLoggedin
                     }
                 })
+                .when("/result", {
+                    templateUrl: "partials/results.ejs",
+                    controller: "result",
+                    resolve: {
+                        loggedin: checkLoggedin
+                    }
+                })
                 .when("/signup", {
                     templateUrl: "partials/signup.ejs",
                 })

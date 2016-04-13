@@ -61,3 +61,15 @@ app.controller('participant', ['$scope','$http','$routeParams', function($scope,
                 function(){console.log("Failed to get data")});
     }
 }]);
+
+app.controller('result', ['$scope','$http','$routeParams', function($scope, $http, $routeParams) {
+    $scope.id = $routeParams.id;
+    $scope.name = $routeParams.nm;
+
+    $http.post('/data/getResults?id='+$routeParams.id,null)
+        .then(
+            function(response){
+                $scope.responses =  JSON.stringify(response.data.dbQuery,null,2);
+            },
+            function(){console.log("Failed to get data")});
+}]);

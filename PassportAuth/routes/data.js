@@ -58,6 +58,14 @@ router.post('/addParticipants', function (req, res){
     });
 });
 
+router.post('/getResults', function (req, res){
+    authenticate (req,res, function(){
+        getResults(req.query.id, function(array){
+            res.json({dbQuery: array});
+        })
+    });
+});
+
 router.post('/deleteParticipant', function (req, res){
     authenticate (req,res, function(){
         deleteParticipants(req.query.id,req.query.person, function(array){
@@ -100,7 +108,6 @@ function findSurvey(id, cb){
 
 function findParticipants(id, cb){
     surveys.findOne({"_id" : id}, function(err, survey) {
-        console.log(JSON.stringify(survey));
         if (err) console.log("LOgging error in find"+err);
         cb(survey.participants);
     });
@@ -176,6 +183,13 @@ function deleteParticipants(id,person,cb){
         if (err) {cb({"success":false})}
         else cb({"success":true,participants:model.participants});
     } )
+}
+
+function getResults (id,cb){
+    surveys.findOne({"_id":id}, function(err, survey){
+        if (err) console.log("Could not getResults: " + error);
+        cb(survey.response);
+    })
 }
 
 module.exports = router;
