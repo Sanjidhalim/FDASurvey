@@ -188,6 +188,7 @@ function deleteParticipants(id,person,cb){
 function getResults (id,cb){
     surveys.findOne({"_id":id}, function(err, survey){
         if (err) console.log("Could not getResults: " + error);
+	console.log("Getting Results" + survey.response);
         cb(survey.response);
     })
 }

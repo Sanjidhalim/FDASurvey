@@ -69,7 +69,9 @@ app.controller('result', ['$scope','$http','$routeParams', function($scope, $htt
     $http.post('/data/getResults?id='+$routeParams.id,null)
         .then(
             function(response){
-                $scope.responses =  JSON.stringify(response.data.dbQuery,null,2);
+		var str = JSON.stringify(response.data.dbQuery,null,2)
+                $scope.responses =  str.replace("\n","<br>");
+		console.log("SCOPE RESPONSE" + $scope.responses);
             },
             function(){console.log("Failed to get data")});
 }]);

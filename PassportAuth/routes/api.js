@@ -38,8 +38,11 @@ router.post('/login',function(req,res,next){
                   "login":true});
 	   });
 	}
-        else res.json({"survey":[],
+        else {
+	console.log("FAILED LOGIN");
+	res.json({"survey":[],
 			"login":false});
+}
     })
 });
 
