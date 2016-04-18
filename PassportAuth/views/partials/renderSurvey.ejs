@@ -18,14 +18,15 @@
             <li role="presentation" class="active"><a href="/users">Home</a></li>
 
         </ul>
-
-    <div>
+    <br>
+    <div class="col-xs-4">
         <label>Enter/Edit Name of Survey</label>
         <input type="text" class="form-control"  placeholder="Name of Survey" ng-model=surveyName>
+        <br>
     </div>
-    <br>
 
-    <table class="table">
+
+    <table class="table table-striped">
         <tr ng-repeat="question in questions">
 
             <td ng-if = "question.type== 'Txt'">{{question.prompt }}</td>
@@ -61,40 +62,61 @@
     <input type="text" class="form-control" name="" ng-model="newQuestion" placeholder="Enter Question">
     <br>
     -->
-    <span class="label label-pill label-info">Select type of question to add</span>
-    <select ng-model="questionType">
-        <option value="Num">Number input</option>
-        <option value="Txt">Text input</option>
-        <option value="Mc">Multiple Choice</option>
-    </select>
+    <div class="question">
+        <h4>
+            <span class="label label-info">Select type of question to add</span>
+            <select ng-model="questionType">
+                <option value="Num">Number input</option>
+                <option value="Txt">Text input</option>
+                <option value="Mc">Multiple Choice</option>
+            </select>
+            <br>
+        </h4>
 
-    <div ng-if="questionType=='Num'">
-        <input type="text" class="form-control" name="" ng-model="$parent.newQuestion" placeholder="Enter Question">
-        <br>
-    </div>
+        <div ng-if="questionType=='Num'">
+            <input type="text" class="form-control" name="" ng-model="$parent.newQuestion" placeholder="Enter Question">
+            <div>
+                <br>
+                <button class="btn btn-primary" ng-click="addQuestion()" ng-disabled = notEnabled>Add Question</button>
+            </div>
 
-    <div ng-if="questionType=='Txt'">
-        <input type="text" class="form-control" name="" ng-model="$parent.newQuestion" placeholder="Enter Question">
-        <br>
-    </div>
-    <br>
-
-    <div ng-if="questionType=='Mc'">
-        <input type="text" class="form-control" name="" ng-model="$parent.newQuestion" placeholder="Enter Prompt">
-        <br>
-
-        <div class="col-xs-3" ng-repeat="i in newOptions">
-            <input class="form-control" ng-model="mcqPrompts[i]" type="text" placeholder="Add new option"><br>
         </div>
-        <button class = "btn btn-primary" ng-click="newMcOption()">Add Option</button>
-    </div>
-    <br>
 
+        <div ng-if="questionType=='Txt'">
+            <input type="text" class="form-control" name="" ng-model="$parent.newQuestion" placeholder="Enter Question">
+            <div>
+                <br>
+                <button class="btn btn-primary" ng-click="addQuestion()" ng-disabled = notEnabled>Add Question</button>
+            </div>
+        </div>
+
+        <div ng-if="questionType=='Mc'">
+            <input type="text" class="form-control" name="" ng-model="$parent.newQuestion" placeholder="Enter Prompt">
+            <br>
+
+            <div class="col-xs-3" ng-repeat-start="i in newOptions">
+                <input class="form-control" ng-model="mcqPrompts[i]" type="text" placeholder="Add new option">
+            </div><br><br ng-repeat-end />
+
+            <br>
+
+            <div>
+                <button class = "btn btn-primary" ng-click="newMcOption()">Add Option</button>
+            </div>
+
+            <div>
+                <br>
+                <button class="btn btn-primary" ng-click="addQuestion()" ng-disabled = notEnabled>Add Question</button>
+            </div>
+
+        </div>
+        <br>
+    </div>
 
 </div>
 
 <div class="container">
-    <button class="btn btn-primary" ng-click="addQuestion()" ng-disabled = notEnabled>Add Question</button>
+    <br>
     <button class="btn btn-primary" ng-click="saveSurvey()" ng-disabled = "notEnabled || surveyName.length==0">Save Survey</button>
     <button class="btn btn-primary" ng-click="publish()" ng-disabled = "notEnabled || surveyName.length==0">Publish Survey</button>
 

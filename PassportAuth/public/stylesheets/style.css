@@ -6,3 +6,16 @@ body {
 a {
   color: #00B7FF;
 }
+
+div.box {
+  float:right;
+}
+
+div.box2 {
+  float:left;
+  background-color: beige;
+}
+
+div.question{
+  background-color: beige;
+}

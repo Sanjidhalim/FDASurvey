@@ -38,13 +38,15 @@ app.controller('renderSurvey', ['$scope', '$http', '$routeParams', function($sco
     $scope.newMcOption= function(){
         $scope.newOptions.push($scope.newOptions.length);
         console.log("MCQ PROMPTS:" + $scope.mcqPrompts);
-        console.log($scope.questionType);
-        console.log($scope.newQuestion);
     };
 
     //Add Questions of question is not empty
     $scope.addQuestion = function() {
         if($scope.questionType!="" && $scope.newQuestion != ""){
+
+            //Remove empty options
+
+
             $scope.questions.push({type:$scope.questionType,
                 prompt: $scope.newQuestion,
                 options: $scope.mcqPrompts});

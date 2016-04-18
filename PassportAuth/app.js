@@ -5,6 +5,7 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var schedule = require('node-schedule');
 
 var app = express();
 
@@ -28,6 +29,13 @@ var passport = require ('passport');
 var initPassport = require('./Authentication/auth');
 initPassport(passport);
 
+
+//schedule jobs
+var date = new Date(2016, 3, 17, 21, 30, 0);
+var j = schedule.scheduleJob(date, function(){
+    console.log('The world is going to end today.');
+})
+
 app.use(require('express-session')({
     secret: 'keyboard cat',
     resave: false,
@@ -39,7 +47,7 @@ app.use(passport.session());
 
 app.use(flash());
 
-//app.use(express.static(path.join(__dirname, '/public')));
+//app.use('/css/stylesheet', express.static(path.join(__dirname, '/public/stylesheets/style.css')));
 app.use('/public',express.static(path.join(__dirname, '/public')));
 
 var routes = require('./routes');

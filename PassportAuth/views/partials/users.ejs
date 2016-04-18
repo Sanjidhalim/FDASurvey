@@ -8,10 +8,13 @@
         <p> Click below to make your first survey! </p>
     </div>
 
+    <div class="box"><h4>Search: <input ng-model="query"></h4></div>
+
+
     <div ng-if="survey.length!=0">
         <p> Here are your surveys </p>
         <table class="table">
-            <tr ng-repeat="survey in $parent.survey">
+            <tr ng-repeat="survey in $parent.survey | filter:query">
 
                 <td> <a href="{{'/renderSurvey?id='+ survey[1]}}">{{survey[0]}}</a> </td>
                 <td> <a href="{{'/participant?id='+ survey[1] + '&nm=' + splitAndAdd(survey[0])}}">
