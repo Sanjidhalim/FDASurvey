@@ -64,7 +64,7 @@ app.controller('participant', ['$scope','$http','$routeParams', function($scope,
 
 app.controller('result', ['$scope','$http','$routeParams', function($scope, $http, $routeParams) {
     $scope.id = $routeParams.id;
-    $scope.name = $routeParams.nm;
+    //$scope.name = $routeParams.nm;
 	
 	var getAnswers = function(response){
 		var answerArray = [];

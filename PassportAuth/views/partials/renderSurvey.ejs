@@ -16,6 +16,8 @@
     <h1>Survey Creator</h1>
         <ul class="nav nav-tabs">
             <li role="presentation" class="active"><a href="/users">Home</a></li>
+			<li ng-if="id!=null" role="presentation" class="active"><a href="{{'/participant?id='+ id}}">Participants</a></li>
+			<li ng-if="id!=null" role="presentation" class="active"><a href="{{'/result?id='+ id}}">Results</a></li>
 
         </ul>
     <br>

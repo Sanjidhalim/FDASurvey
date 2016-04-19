@@ -18,6 +18,8 @@
 
     <ul class="nav nav-tabs">
         <li role="presentation" class="active"><a href="/users">Home</a></li>
+		<li role="presentation" class="active"><a href="{{'/renderSurvey?id='+ id}}">Survey</a></li>
+		<li role="presentation" class="active"><a href="{{'/result?id='+ id}}">Results</a></li>
     </ul>
 
     <div ng-if="participants.length==0">

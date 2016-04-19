@@ -1,19 +1,21 @@
 <div class="container" >
     <h1>SurveyGen</h1>
+
 	
     <ul class="nav nav-tabs">
         <li role="presentation" class="active"><a href="/users">Home</a></li>
-		<li role="presentation" class="active"><a href="{{'/renderSurvey?id='+ id}">Survey</a></li>
+		<li role="presentation" class="active"><a href="{{'/renderSurvey?id='+ id}}">Survey</a></li>
 		<li role="presentation" class="active"><a href="{{'/participant?id='+ id}}">ManageParticipants</a></li>
     </ul>
 	
 	<h3>Answer to {{name}} Survey</h3>
 	
-	<div ng-if="hasResponses == 'false'">
-		<h1> There are no responses yet </h1>
+
+	<div ng-if="hasResponses === false">
+		<span> There are no responses yet </span>
 	</div>
 	
-	<div ng-if="hasResponses != 'false'">
+	<div ng-if="hasResponses !== false">
 		<ul class="list-group" ng-repeat="answer in answers track by $index">
 			<li class="list-group-item list-group-item-info">Q{{$index+1}}: {{questions[$index]}}</li>
 			<li class="list-group-item" ng-repeat="eachAnswer in answer">{{eachAnswer}}</li>
