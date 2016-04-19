@@ -112,6 +112,51 @@
         </div>
         <br>
     </div>
+	<br>
+	
+	<div class = question>
+    <br>
+    <form name="myForm">
+        <label>Repeat?:
+            <input type="checkbox" ng-model="repeat">
+        </label>
+    </form>
+    <div ng-if="repeat">
+        <label>Mon
+            <input type="checkbox" ng-model="a">
+        </label>
+        <label>Tue
+            <input type="checkbox" ng-model="b">
+        </label>
+        <label>Wed
+            <input type="checkbox" ng-model="c">
+        </label>
+        <label>Thu
+            <input type="checkbox" ng-model="d">
+        </label>
+        <label>Fri
+            <input type="checkbox" ng-model="e">
+        </label>
+        <label>Sat
+            <input type="checkbox" ng-model="f">
+        </label>
+        <label>Sun
+            <input type="checkbox" ng-model="g">
+        </label><br>
+
+        <label>Number of times a day</label>
+        <input type="number" ng-model="numDay">
+        <br>
+
+        <div ng-repeat="i in getNumber(numDay)">
+            <label>Time {{i}}</label>
+            <input type="time" ng-model="sda">
+        </div>
+        <br>
+
+        <label>Repeat until?</label>
+        <input type="date" ng-model="Until">
+    </div>
 
 </div>
 

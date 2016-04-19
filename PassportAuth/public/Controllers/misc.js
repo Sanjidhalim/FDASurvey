@@ -65,12 +65,49 @@ app.controller('participant', ['$scope','$http','$routeParams', function($scope,
 app.controller('result', ['$scope','$http','$routeParams', function($scope, $http, $routeParams) {
     $scope.id = $routeParams.id;
     $scope.name = $routeParams.nm;
+	
+	var getAnswers = function(response){
+		var answerArray = [];
+		//converts response string to array where each index contains another array
+		//with all answers of a particular individual
+		for (i=0;i<response.length;i++){
+			answerArray.push(response[i].answers.slice(1,-1).split(","));
+		}
+		//convers previous array to array where each index contains an array
+		//containing all answers for particular question
+		var modAnsArray = [];
+		for (i=0;i<answerArray[0].length;i++){
+			var temp=[];
+				for(j=0;j<response.length;j++){
+					temp.push(answerArray[j][i]);
+				}
+				modAnsArray.push(temp);
+		}
+		console.log(modAnsArray);
+		return modAnsArray;		
+	}
+	
+	var getQuestions =  function(data){
+		var temp=[]
+		for (var i=0; i<data.length;i++){
+			temp.push(data[i].prompt);
+		}
+		console.log("Questions: " + temp);
+		return temp;
+	}
 
     $http.post('/data/getResults?id='+$routeParams.id,null)
         .then(
             function(response){
-                $scope.responses = response.data.dbQuery;
-		        console.log("SCOPE RESPONSE" + $scope.responses);
-            },
+				if(response.data.dbQuery.hasOwnProperty('response') &&
+						response.data.dbQuery.response.length!=0){
+					$scope.hasResponses = true;
+					$scope.answers = getAnswers(response.data.dbQuery.response);
+					$scope.questions = getQuestions(response.data.dbQuery.questions);
+					$scope.name = response.data.dbQuery.name;
+				
+				} else {$scope.hasResponses = false};
+				console.log("HAS RESPONSE: " + $scope.hasResponses);
+			},
             function(){console.log("Failed to get data")});
 }]);

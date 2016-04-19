@@ -6,6 +6,14 @@ app.controller('renderSurvey', ['$scope', '$http', '$routeParams', function($sco
     //for adding multiple choice and checkbox options
     $scope.newOptions = [];
     $scope.mcqPrompts=[];
+	$scope.numDay = 1;
+    $scope.getNumber = function(num){
+        var temp = [];
+        for (var i=1;i<=num;i++){
+            temp.push(i);
+        }
+        return temp;
+    }
 
     //ng-model values for adding new questions
     $scope.questionType = "";

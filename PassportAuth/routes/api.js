@@ -49,7 +49,7 @@ router.post('/login',function(req,res,next){
 router.post('/saveSurvey', function (req, res,next){
     authenticate(req.headers.email, req.headers.password, function(exists){
         if (exists){
-            console.log("Printing headers:" + JSON.stringify(req.headers));
+            console.log("Printing headers:" + req.headers);
             console.log("SurveyID" + req.headers.surveyid);
             /*surveys.find().where("_id").equals(req.headers.surveyID)
                 .update({$set: {response:{"answers":req.headers.answer,"email":req.headers.email}}})
@@ -58,7 +58,7 @@ router.post('/saveSurvey', function (req, res,next){
 			else {console.log("Responses saved to survey: " + JSON.stringify(data))}
 		});*/
 		var temp = {"answers":req.headers.answer,"email":req.headers.email};
-		console.log("save survey temp var : " + JSON.stringify(temp));
+		//console.log("save survey temp var : " + JSON.stringify(temp));
 		surveys.update({_id: req.headers.surveyid}, {
            		 $push: {
                 		response: temp,
