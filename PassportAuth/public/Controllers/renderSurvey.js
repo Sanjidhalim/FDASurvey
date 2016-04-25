@@ -6,13 +6,32 @@ app.controller('renderSurvey', ['$scope', '$http', '$routeParams', function($sco
     //for adding multiple choice and checkbox options
     $scope.newOptions = [];
     $scope.mcqPrompts=[];
-	$scope.numDay = 1;
+
+    //Used for getting array for ng-repeat
     $scope.getNumber = function(num){
         var temp = [];
         for (var i=1;i<=num;i++){
             temp.push(i);
         }
         return temp;
+    };
+
+    //Testing function
+    $scope.print = function(){
+      console.log($scope.repeatSurvey);
+    };
+
+    //Variables for repeat Survey
+    $scope.repeatSurvey={};
+    $scope.repeatSurvey.repeat=false;
+    $scope.repeatSurvey.numPerDay=1;    //NumberOfRepeatsPerDay
+    $scope.repeatSurvey.time=[];        //repeatTimeEveryDay
+    $scope.repeatSurvey.days={};
+    $scope.repeatSurvey.until=null;
+    var dayList=["Sun","Mon","Tue","Wed",
+        "Thu","Fri","Sat"];
+    for (var i=0; i<dayList.length;i++){
+        $scope.repeatSurvey.days[dayList[i]]=false;
     }
 
     //ng-model values for adding new questions

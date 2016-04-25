@@ -120,44 +120,35 @@
     <br>
     <form name="myForm">
         <label>Repeat?:
-            <input type="checkbox" ng-model="repeat">
+            <input type="checkbox" ng-model="repeatSurvey.repeat">
         </label>
     </form>
-    <div ng-if="repeat">
-        <label>Mon
-            <input type="checkbox" ng-model="a">
-        </label>
-        <label>Tue
-            <input type="checkbox" ng-model="b">
-        </label>
-        <label>Wed
-            <input type="checkbox" ng-model="c">
-        </label>
-        <label>Thu
-            <input type="checkbox" ng-model="d">
-        </label>
-        <label>Fri
-            <input type="checkbox" ng-model="e">
-        </label>
-        <label>Sat
-            <input type="checkbox" ng-model="f">
-        </label>
-        <label>Sun
-            <input type="checkbox" ng-model="g">
-        </label><br>
+
+
+    <div ng-if="repeatSurvey.repeat">
+
+        <span ng-repeat="(key,val) in repeatSurvey.days ">
+            <label>{{key}}
+                <input type="checkbox" ng-model="repeatSurvey.days[key]">
+            </label>
+        </span>
 
         <label>Number of times a day</label>
-        <input type="number" ng-model="numDay">
+            <input type="number" ng-model="repeatSurvey.numPerDay">
         <br>
 
-        <div ng-repeat="i in getNumber(numDay)">
+        <div ng-repeat="i in getNumber(repeatSurvey.numPerDay)">
             <label>Time {{i}}</label>
-            <input type="time" ng-model="sda">
+            <input type="time" name="{{'repeatTime'+ i}}" ng-model="repeatSurvey.time[i]">
         </div>
         <br>
 
+
         <label>Repeat until?</label>
-        <input type="date" ng-model="Until">
+        <input type="date" ng-model="repeatSurvey.until">
+
+
+        <input type="submit" value="PRINT" ng-click="print()">
     </div>
 
 </div>
